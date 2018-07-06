@@ -1,0 +1,101 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jquery.photoClip 图片裁剪添加旋转 缩放按钮功能</title>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<style>
+.boxCen {
+	text-align: center;
+}
+.file-clip { /* 图片窗口尺寸 */
+	width: 300px;
+	height: 500px;
+	background: #666;
+	display: inline-block;
+	vertical-align: bottom;
+}
+.file {
+	position: relative;
+	display: inline-block;
+	overflow: hidden;
+	vertical-align: middle;
+	margin: 20px 20px 0 0;
+}
+.boxCen .file {
+	vertical-align: bottom;
+}
+.service-file {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	opacity: 0;
+	bottom: 0;
+	cursor: pointer;
+}
+.file-btn { 
+	width:auto;
+	margin: 5px 10px;
+    padding:0 10px;
+	border: 1px solid #606060;
+	cursor:pointer;
+}
+
+</style>
+</head>
+<body>
+<div id="tt"></div>
+<script type="text/javascript" src="js/iscroll-zoom.js"></script> 
+<script type="text/javascript" src="js/hammer.js"></script> 
+<script type="text/javascript" src="js/lrz.all.bundle.js"></script> 
+<script type="text/javascript" src="js/jquery.photoClip.js"></script> 
+<script>
+$(function(){
+	//生成操作按钮
+	var html = '<div class="boxCen">';
+		html += '<div id="clipArea" class="file-clip"></div>';
+		html += '<br>'
+		html += '<div class="file">';
+        html += '<div class="file-btn">点击上传图片</div>';
+        html += '<input type="file" class="service-file" id="file">';
+        html += '</div>';
+		html += '<div class="file-btn" id="clipBtn">裁剪图片</div>';
+		html += '<div class="file-btn" id="rotaBtn">选转</div>';
+		html += '<div class="file-btn" id="bigImg" >放大</div>';
+		html += '<div class="file-btn" id="smallImg">缩小</div>';
+		html += '<div class="red">（鼠标滚轮为缩放，每次双击则顺时针旋转90度）</div>';
+		html += '</div>';
+		html += '<div id="imgHtml" class="clipEnd"></div>';	
+		$('#tt').html(html);
+		clip();
+});
+
+function clip(){
+	$("#clipArea").photoClip({
+		size: [200, 300],   //裁剪尺寸
+		file: "#file",
+		ok: "#clipBtn",     //裁剪绑定
+		view:"#imgcav",
+		rotaBtn:'#rotaBtn',   //旋转绑定
+		bigBtn:'#bigImg',     //放大
+		smallBtn:'#smallImg', //缩小
+		outputSize:[200, 300], //裁剪尺寸
+		loadStart: function() {
+			console.log("照片读取中");
+		},
+		loadComplete: function() {
+			console.log("照片读取完成");
+		},
+		clipFinish: function(dataURL) { //
+			console.log(dataURL);
+			var img = '<img class="ct-img" src="'+dataURL+'">';
+			$('#imgHtml').html(img);
+		}
+	});
+}
+</script>
+
+</body>
+</html>
